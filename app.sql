@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 --
 
 # DROP TABLE IF EXISTS `app_user`;
-CREATE TABLE IF NOT EXISTS `bysj_user` (
+CREATE TABLE IF NOT EXISTS `app_user` (
   `id` int(13) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `nickname` varchar(200) CHARACTER SET utf8mb4 NOT NULL DEFAULT '某某用户' COMMENT '用户昵称',
   `password` varchar(32) NOT NULL COMMENT '用户密码',
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `bysj_user` (
 --
 
 # DROP TABLE IF EXISTS `app_dictionary`;
-CREATE TABLE IF NOT EXISTS `bysj_dictionary` (
+CREATE TABLE IF NOT EXISTS `app_dictionary` (
   `id` int(13) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `word` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
