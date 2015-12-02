@@ -100,7 +100,8 @@ class User_model extends MY_Model{
         }
         $data['create_time'] = date('Y-m-d H:i:s');
         $data['update_time'] = time();
+        $data['status'] = self::NORMAL_STATUS;
         $id = $this->_insert_ignore('app_user', $data);
-        return $id ? $id : false;
+        return $id ? $this->db->insert_id() : false;
     }
 }
