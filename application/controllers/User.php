@@ -84,10 +84,11 @@ class User extends MY_Controller{
         $open_id = $this->input->get_post('openid');
         $user_model = $this->Model_bus->get_user_model();
         $user = $user_model->get_user(array('openid' => $open_id));
+        $this->load->helper('url');
         if($user){
-            dump($user);
+            redirect('');
         }else{
-            $this->load->helper('url');
+
             $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".APPID."&redirect_uri=http://" .$_SERVER['HTTP_HOST']. "/user/oauth/&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
             redirect($url);
         }
@@ -123,7 +124,8 @@ class User extends MY_Controller{
         $user_model = $this->Model_bus->get_user_model();
         $user_id = $user_model->create($user_data);
         $user = $user_model->get_user(array('id' => $user_id, 'openid' => $user_info['openid']));
-        dump($user);
+        $this->load->helper('url');
+        redirect('');
     }
 
     /**
