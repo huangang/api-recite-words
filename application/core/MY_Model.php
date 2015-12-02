@@ -38,6 +38,9 @@
  */
 class MY_Model extends CI_Model{
 
+    const NORMAL_STATUS = 1;//正常
+    const FROZEN_STATUS = -1;//被管理员冻结
+
     //构造方法
     public function __construct(){
         parent::__construct();

@@ -82,16 +82,27 @@ class User extends MY_Controller{
      */
     public function wx_login(){
         $open_id = $this->input->get_post('openid');
-        $this->load->helper('url');
-        $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".APPID."&redirect_uri=http://" .$_SERVER['HTTP_HOST']. "/user/oauth/&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
-        redirect($url);
+        $user_model = $this->Model_bus->get_user_model();
+        $user = $user_model->get_user(array('openid' => $open_id));
+        if($user){
+            dump($user);
+        }else{
+            $this->load->helper('url');
+            $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".APPID."&redirect_uri=http://" .$_SERVER['HTTP_HOST']. "/user/oauth/&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+            redirect($url);
+        }
     }
 
 
     public function oauth(){
         $code = $this->input->get_post('code');
         $user_info = $this->get_wx_user_info($code);
-        dump($user_info);
+        $user_data = array('openid' => $user_info['openid'],'nickname' => $user_info['nickname'],
+            'head' => $user_info['headimgurl']);
+        $user_model = $this->Model_bus->get_user_model();
+        $user_id = $user_model->create($user_data);
+        $user = $user_model->get_user(array('id' => $user_id, 'openid' => $user_info['openid']));
+        dump($user);
     }
 
     public function register(){

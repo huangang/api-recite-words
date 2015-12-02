@@ -28,6 +28,7 @@
 class Model_bus{
 
     private static $_common_model     = null;
+    private static $_user_model     = null;
 
 
     /**
@@ -61,9 +62,20 @@ class Model_bus{
      */
     public static function get_common_model(){
         if( self::$_common_model == null ){
-            self::$_common_model = self::_load('common');
+            self::$_common_model = self::_load('Common');
         }
         return self::$_common_model;
+    }
+
+
+    /**
+     * @return User_model
+     */
+    public static function get_user_model(){
+        if( self::$_user_model == null ){
+            self::$_user_model = self::_load('User');
+        }
+        return self::$_user_model;
     }
 
 }

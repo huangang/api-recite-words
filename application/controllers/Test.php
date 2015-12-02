@@ -39,4 +39,12 @@ class Test extends MY_Controller{
         }
 
     }
+
+    public function test_for(){
+        $must_array = array('nickname' => 'rkmcke','mobile' => 15168412460);
+        foreach($must_array as $k => $v ){
+            var_dump($k);
+            var_dump($v);
+        }
+    }
 }
