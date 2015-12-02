@@ -29,7 +29,7 @@ class User extends MY_Controller{
 
 
     /**
-     * 登录
+     * app登录
      *
      *
      * @internal param string $mobile `required` 用户注册手机号
@@ -94,6 +94,27 @@ class User extends MY_Controller{
     }
 
 
+    /**
+     * 微信授权注册
+     *
+     *
+     * @internal param string $code `required` 微信code
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
     public function oauth(){
         $code = $this->input->get_post('code');
         $user_info = $this->get_wx_user_info($code);
@@ -105,6 +126,26 @@ class User extends MY_Controller{
         dump($user);
     }
 
+    /**
+     * app注册
+     *
+     *
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
     public function register(){
 
     }
@@ -128,7 +169,6 @@ class User extends MY_Controller{
      * ```
      *
      *------------
-     * @throws Exception
      * @version 1.0.0
      * @author  huangang
      */
