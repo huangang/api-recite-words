@@ -40,7 +40,7 @@ class User_model extends MY_Model{
      *
      * ------
      *
-     * @return array | boolean
+     * @return object | boolean
      *
      * ```
      * 返回结果

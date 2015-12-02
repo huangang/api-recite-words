@@ -61,13 +61,12 @@ class User extends MY_Controller{
      * 微信登录
      *
      *
-     * @internal param string $mobile `required` 用户注册手机号
-     * @internal param string $password `required` 用户密码，md5加密后
+     * @internal param string $openid `required` 微信用户openid
      *
      *
      * ------
      *
-     * @return json
+     * @return void
      *
      * ```
      * 返回结果
@@ -81,18 +80,18 @@ class User extends MY_Controller{
      * @author  huangang
      */
     public function wx_login(){
-        $open_id = $this->input->get_post('openid');
+        $openid = $this->input->get_post('openid');
         $user_model = $this->Model_bus->get_user_model();
-        $user = $user_model->get_user(array('openid' => $open_id));
+        $user = $user_model->get_user(array('openid' => $openid));
         $this->load->helper('url');
         if($user){
-            redirect('');
+            redirect('http://app.pupued.com/#/login?openid='.$openid.'&uid='.$user->id.'&nickname='.$user->nickname.'&head='.$user->head);
         }else{
-
             $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".APPID."&redirect_uri=http://" .$_SERVER['HTTP_HOST']. "/user/oauth/&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
             redirect($url);
         }
     }
+
 
 
     /**
@@ -125,7 +124,7 @@ class User extends MY_Controller{
         $user_id = $user_model->create($user_data);
         $user = $user_model->get_user(array('id' => $user_id, 'openid' => $user_info['openid']));
         $this->load->helper('url');
-        redirect('');
+        redirect('http://app.pupued.com/#/login?openid='.$user_info['openid'].'&uid='.$user->id.'&nickname='.$user->nickname.'&head='.$user->head);
     }
 
     /**
