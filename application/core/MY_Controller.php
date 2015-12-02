@@ -1,15 +1,49 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: huangang
- * Date: 15/9/11
- * Time: 下午6:44
+ * ReciteWords API framework
+ *
+ * 此版本API为V1版本API
+ *
+ * @package	ReciteWords
+ * @author	ReciteWords Dev Team
+ * @copyright	Copyright (c) 2015 - 2016, ReciteWords Co,Ltd. (http://www.huangang.net/)
+ * @link	http://www.huangang.net/)
+ * @since	Version 1.0.0
+ * @filesource
+ */
+
+
+/**
+ * ReciteWords MY_Controller Class
+ *
+ * Controller基类
+ *
+ * @property CI_DB_mysqli_driver | CI_DB  | CI_DB_result $db
+ * @property CI_Lang $lang                        Language Class
+ * @property CI_Loader $load                      Loads views and files
+ * @property CI_Log $log                          Logging Class
+ * @property CI_Model $model                      CodeIgniter Model Class
+ * @property CI_Output $output                    Responsible for sending final output to browser
+ * @property CI_Profiler $profiler                This class enables you to display benchmark, query, and other data<br />in order to help with debugging and optimization.
+ * @property CI_Router $router                    Parses URIs and determines routing
+ * @property CI_Session $session
+ * @property CI_config $config
+ *
+ * @package        ReciteWords
+ * @subpackage    API
+ * @category    MY_Controller
+ * @author        huangang
+ * @link
  */
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class MY_Controller extends CI_Controller
-{
+class MY_Controller extends CI_Controller{
+
+    const success = 200;
+    const MSG_SUCCESS = 'success';
+    const MSG_FAIL = 'fail';
 
     /**
      * 初始化
@@ -17,7 +51,60 @@ class MY_Controller extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->library("ErrorCode");
+
     }
+
+
+    /**
+     * 返回结果
+     * @param array|string $data
+     * @param int $code
+     * @param bool|int $json_options
+     * @throws Exception
+     */
+    public function output( $data = '' , $code = self::success , $json_options = true){
+        $ret['data'] = array();
+        if(!empty($data)){
+            if(!is_array($data)){
+                $ret['data'] =  $data;
+            }else{
+                $ret['data'] = array_merge($ret['data'] , $data);
+            }
+        }
+        if($code == self::success){
+            $ret['result'] = 1;
+        }else{
+            $ret['result'] = $code;
+        }
+        //check if it's jsonp format
+        if(isset($_REQUEST['format']) && $_REQUEST['format'] == 'jsonp' ){
+            header('Content-type: application/x-javascript');
+            if(!isset($_GET['callback'])){
+                throw new Exception('jsonp应该指定callback');
+            }
+            echo $_GET['callback']."([".json_encode($ret, $json_options)."])";
+        }else{
+            header('Content-Type: application/json');
+            echo json_encode( $ret , $json_options);//JSON_NUMERIC_CHECK
+        }
+    }
+
+    /**
+     * 检查参数
+     * @param array $parameter 一维数组
+     * @throws Exception
+     */
+    protected function check_parameter($parameter){
+        foreach($parameter as $k => $v){
+            if(empty($v)){
+                throw new Exception($k . 'parameter is null', ErrorCode::param_error);
+            }
+        }
+
+    }
+
+
 
 
 }
