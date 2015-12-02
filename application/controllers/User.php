@@ -133,7 +133,6 @@ class User extends MY_Controller{
         $user_info_url = "https://api.weixin.qq.com/sns/userinfo?access_token=$access_token&openid=$openid&lang=zh_CN";
         $user_info_json = https_request($user_info_url);
         $user_info_array = json_decode($user_info_json, true);
-        $user_info_array['unionid'] = $access_token_array['unionid'];
         return $user_info_array;
     }
 
