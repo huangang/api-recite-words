@@ -6,4 +6,9 @@
 app_user 用户表   
 app_word 单词表   
 app_user_word 用户学习的   
-app_user_study_record 学习记录   
+app_user_study_record 学习记录  
+
+## 规范
+> 代码变量写法按照php风格来   
+> 注释一定要写
+
