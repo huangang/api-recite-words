@@ -98,7 +98,7 @@ class MY_Controller extends CI_Controller{
     protected function check_parameter($parameter){
         foreach($parameter as $k => $v){
             if(empty($v)){
-                throw new Exception($k . 'parameter is null', ErrorCode::param_error);
+                throw new Exception($k . 'parameter is null', ErrorCodes::param_error);
             }
         }
 
