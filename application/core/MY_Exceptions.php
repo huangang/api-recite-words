@@ -29,6 +29,8 @@
 
 class MY_Exceptions extends CI_Exceptions {
 
+    private $is_json = false;
+
     /**
      * 初始化
      */
@@ -82,19 +84,28 @@ class MY_Exceptions extends CI_Exceptions {
      * @return	string	Error page output
      */
     public function show_error($heading, $message, $template = 'error_general', $status_code = 500){
-        $ret = array(
-            'result' => $status_code,
-            'heading' => $heading,
-            'message' => $message
-        );
-        return json_encode($ret);
+        if( $this->is_json ){
+            $ret = array(
+                'result' => $status_code,
+                'heading' => $heading,
+                'message' => $message
+            );
+            return json_encode($ret);
+        }else{
+            $ret = parent::show_error($heading, $message, $template = 'error_general', $status_code = 500);
+            return $ret;
+        }
 
     }
 
     public function show_exception(Exception $exception)
     {
-        $buffer = $this->show_error('Server Error', $exception->getMessage(), 'Internal Error', $exception->getCode());
-        echo $buffer;
+        if(  $this->is_json ){
+            $buffer = $this->show_error('Server Error', $exception->getMessage(), 'Internal Error', $exception->getCode());
+            echo $buffer;
+        }else{
+            parent::show_exception($exception);
+        }
     }
 
     /**
@@ -108,8 +119,12 @@ class MY_Exceptions extends CI_Exceptions {
      */
     public function show_php_error($severity, $message, $filepath, $line)
     {
-        $buffer = $this->show_error("Server Error", 'Server_Error' , 'error_general' , 1);
-        echo $buffer;
+        if( $this->is_json ){
+            $buffer = $this->show_error("Server Error", 'Server_Error' , 'error_general' , 1);
+            echo $buffer;
+        }else{
+            parent::show_php_error($severity, $message, $filepath, $line);
+        }
 
     }
 

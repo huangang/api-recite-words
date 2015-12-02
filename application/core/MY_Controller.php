@@ -19,7 +19,7 @@
  *
  * Controller基类
  *
- * @property CI_DB_mysqli_driver | CI_DB  | CI_DB_result $db
+ * @property CI_DB_mysqli_driver | CI_DB $db
  * @property CI_Lang $lang                        Language Class
  * @property CI_Loader $load                      Loads views and files
  * @property CI_Log $log                          Logging Class
@@ -29,15 +29,14 @@
  * @property CI_Router $router                    Parses URIs and determines routing
  * @property CI_Session $session
  * @property CI_config $config
- *
+ * @property CI_input $input
+ * @property Model_bus $Model_bus
  * @package        ReciteWords
  * @subpackage    API
  * @category    MY_Controller
  * @author        huangang
  * @link
  */
-
-defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller{
 
@@ -51,7 +50,8 @@ class MY_Controller extends CI_Controller{
     public function __construct()
     {
         parent::__construct();
-        $this->load->library("ErrorCode");
+        $this->load->model("Model_bus");
+        $this->load->library("ErrorCodes");
 
     }
 

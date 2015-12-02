@@ -15,7 +15,7 @@
 
 /**
  * User Controller Class
- * 项目主入口
+ * 用户操作接口
  *
  *
  * @package       ReciteWords

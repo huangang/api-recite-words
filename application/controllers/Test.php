@@ -15,28 +15,19 @@
 
 
 /**
- * Common Model Class
- * 公共函数model
+ * Test Controller Class
+ * 随意测试类
  *
  *
  * @package       ReciteWords
- * @subpackage    Model
- * @category      Common
+ * @subpackage    Controller
+ * @category      Test
  * @author        huangang
  * @link
  */
-class Common_model extends MY_Model{
+class Test extends MY_Controller{
 
-
-    public function test(){
-
-        $this->db->from('app_words');
-        $this->db->limit(10);
-        $this->db->order_by('id','desc');
-        $this->db->select('word');
-        $ret = $this->db->get()->result_array();
-        dump($ret);
+    public function index(){
+        $this->Model_bus->get_common_model()->test();
     }
-
-
 }

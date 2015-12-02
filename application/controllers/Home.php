@@ -16,7 +16,7 @@
 
 /**
  * Home Controller Class
- * 项目主入口
+ * 微信主入口
  *
  *
  * @package       ReciteWords
@@ -35,7 +35,7 @@ class Home extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-
+        @$this->load->library('Wechat');
     }
 
     /**
@@ -43,7 +43,8 @@ class Home extends MY_Controller
      */
     public function index()
     {
-        @$this->load->library('Wechat');
+
+
         $options = array(
             'token'=> Token, //填写你设定的key
             //'encodingaeskey'=> ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略

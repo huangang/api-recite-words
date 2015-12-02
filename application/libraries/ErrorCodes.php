@@ -1,6 +1,6 @@
 <?php
 
-class ErrorCode {
+class ErrorCodes {
 
     const success = 200;
 

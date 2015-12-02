@@ -41,7 +41,7 @@ class MY_Model extends CI_Model{
     //构造方法
     public function __construct(){
         parent::__construct();
-        $this->load->library("ErrorCode");
+        $this->load->library("ErrorCodes");
     }
 
     /**

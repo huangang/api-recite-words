@@ -64,10 +64,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
+	'hostname' => 'rds981e4jok811in7urz.mysql.rds.aliyuncs.com',
+	'username' => 'huangang',
 	'password' => '2012810505',
-	'database' => 'app',
+	'database' => 'recite_words_app',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
