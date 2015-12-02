@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ReciteWords API framework
  *
@@ -15,19 +14,16 @@
 
 
 /**
- * Common Model Class
- * 公共函数model
+ * User Controller Class
+ * 项目主入口
  *
  *
  * @package       ReciteWords
- * @subpackage    Model
- * @category      Common
+ * @subpackage    Controller
+ * @category      User
  * @author        huangang
  * @link
  */
-class Common_model extends MY_Model
-{
-
-
+class User extends MY_Controller{
 
 }

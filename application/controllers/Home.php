@@ -1,10 +1,29 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: huangang
- * Date: 15/9/1
- * Time: 下午6:36
+ * ReciteWords API framework
+ *
+ * 此版本API为V1版本API
+ *
+ * @package	ReciteWords
+ * @author	ReciteWords Dev Team
+ * @copyright	Copyright (c) 2015 - 2016, ReciteWords Co,Ltd. (http://www.huangang.net/)
+ * @link	http://www.huangang.net/
+ * @since	Version 1.0.0
+ * @filesource
+ */
+
+
+/**
+ * Home Controller Class
+ * 项目主入口
+ *
+ *
+ * @package       ReciteWords
+ * @subpackage    Controller
+ * @category      Home
+ * @author        huangang
+ * @link
  */
 class Home extends MY_Controller
 {
@@ -41,7 +60,7 @@ class Home extends MY_Controller
         switch($type) {
             /*文本事件回复*/
             case Wechat::MSGTYPE_TEXT:
-                $reply = $this->tuling($content);
+                $reply = $this->tu_ling($content);
                 if(gettype($reply) == string){
                     $weObj->text($reply)->reply();
                 } else if(is_array($reply)) {
@@ -88,7 +107,7 @@ class Home extends MY_Controller
 
 
     // 图灵机器人
-    private function tuling($keyword) {
+    private function tu_ling($keyword) {
         $key = "94e556076c912d2a9f72ba752f8c4750";
         $api_url = "http://www.tuling123.com/openapi/api?key=".$key."&info=". $keyword;
 
