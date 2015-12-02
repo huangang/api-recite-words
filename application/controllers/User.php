@@ -26,4 +26,68 @@
  */
 class User extends MY_Controller{
 
+
+
+    /**
+     * 登录
+     *
+     *
+     * @internal param string $mobile `required` 用户注册手机号
+     * @internal param string $password `required` 用户密码，md5加密后
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @throws Exception
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function login(){
+        $mobile = $this->input->post_get('mobile');
+        $password = $this->input->post_get('password');
+    }
+
+
+    /**
+     * 微信登录
+     *
+     *
+     * @internal param string $mobile `required` 用户注册手机号
+     * @internal param string $password `required` 用户密码，md5加密后
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @throws Exception
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function wx_login(){
+
+    }
+
+    public function register(){
+
+    }
+
+
+
 }

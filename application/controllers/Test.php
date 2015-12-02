@@ -30,4 +30,13 @@ class Test extends MY_Controller{
     public function index(){
         $this->Model_bus->get_common_model()->test();
     }
+
+
+    public function test_type(){
+        $a = "nce";
+        if(gettype($a) == "string"){
+            echo 1;
+        }
+
+    }
 }

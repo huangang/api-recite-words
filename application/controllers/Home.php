@@ -40,11 +40,23 @@ class Home extends MY_Controller
 
     /**
      * 主入口
+     *
+     *
+     * ------
+     *
+     * @return  void
+     *
+     * ```
+     * 返回结果
+     *
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
      */
-    public function index()
-    {
-
-
+    public function index(){
         $options = array(
             'token'=> Token, //填写你设定的key
             //'encodingaeskey'=> ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
@@ -61,8 +73,8 @@ class Home extends MY_Controller
         switch($type) {
             /*文本事件回复*/
             case Wechat::MSGTYPE_TEXT:
-                $reply = $this->tu_ling($content);
-                if(gettype($reply) == string){
+                $reply = $this->reply_func($content);
+                if(is_string($reply)){
                     $weObj->text($reply)->reply();
                 } else if(is_array($reply)) {
                     $weObj->news($reply)->reply();
@@ -80,15 +92,38 @@ class Home extends MY_Controller
                 break;
             /*图片事件处理*/
             case Wechat::MSGTYPE_IMAGE:
+                exit;
                 break;
             /*语音识别*/
             case Wechat::MSGTYPE_VOICE:
+                exit;
                 break;
             default:
                 $weObj->text("help info")->reply();
         }
     }
 
+
+
+    /**
+     * 特殊字符串处理
+     *
+     * @param string $string `required` 文本内容
+     *
+     * ------
+     *
+     * @return  string
+     *
+     * ```
+     * 返回结果
+     *
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
     private function safe_replace($string) {
         $string = str_replace('%20','',$string);
         $string = str_replace('%27','',$string);
@@ -107,7 +142,25 @@ class Home extends MY_Controller
     }
 
 
-    // 图灵机器人
+    /**
+     * 图灵机器人
+     *
+     * @param string $keyword `required` 用户发起的文本内容
+     *
+     * ------
+     *
+     * @return array | string
+     *
+     * ```
+     * 返回结果
+     *
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
     private function tu_ling($keyword) {
         $key = "94e556076c912d2a9f72ba752f8c4750";
         $api_url = "http://www.tuling123.com/openapi/api?key=".$key."&info=". $keyword;
@@ -261,5 +314,37 @@ class Home extends MY_Controller
         }
 
     }
+
+
+    /**
+     * 文本回复方法
+     *
+     * @param string $text `required` 用户发起的文本内容
+     *
+     * ------
+     *
+     * @return array | string
+     *
+     * ```
+     * 返回结果
+     *
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    private function reply_func($text){
+        switch ($text){
+            case "登录";
+                $reply = "<a href='http://api.pupued.com/user/login'>登录路口</a>";
+                break;
+            default:
+                $reply = $this->tu_ling($text);
+        }
+        return $reply;
+    }
+
 
 }
