@@ -25,10 +25,11 @@
  * @author        huangang
  * @link
  */
-class Home extends MY_Controller
-{
+class Home extends MY_Controller{
 
 
+    private $content = null;
+    private $open_id = null;
     /**
      * 初始化
      */
@@ -66,14 +67,14 @@ class Home extends MY_Controller
         );
         $weObj = new Wechat($options);
         $weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
-        $username = $weObj->getRev()->getRevFrom();
-        $content = $weObj->getRev()->getRevContent();
-        $content = $this->safe_replace($content);
+        $this->open_id = $weObj->getRev()->getRevFrom();
+        $this->content = $weObj->getRev()->getRevContent();
+        $this->content = $this->safe_replace($this->content);
         $type = $weObj->getRev()->getRevType();
         switch($type) {
             /*文本事件回复*/
             case Wechat::MSGTYPE_TEXT:
-                $reply = $this->reply_func($content);
+                $reply = $this->reply_func($this->content);
                 if(is_string($reply)){
                     $weObj->text($reply)->reply();
                 } else if(is_array($reply)) {
@@ -338,7 +339,7 @@ class Home extends MY_Controller
     private function reply_func($text){
         switch ($text){
             case "登录";
-                $reply = "<a href='http://api.pupued.com/user/login'>登录路口</a>";
+                $reply = "<a href='http://api.pupued.com/user/wx_login?openid=$this->open_id' >登录地址</a>";
                 break;
             default:
                 $reply = $this->tu_ling($text);
