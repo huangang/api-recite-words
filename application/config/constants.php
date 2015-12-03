@@ -86,7 +86,7 @@ define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 //微信
-define('APPID', 'wx46f872c9dbf5dc63');
-define('APPSECRET','6b633ed56ccc60f305a3ebcb06558868');
+define('APPID', 'wxec860643e19e028a');
+define('APPSECRET','d4624c36b6795d1d99dcf0547af5443d');
 define('Token', 'huangang');
 define('ENCODINGAESKEY', '');
