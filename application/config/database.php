@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'rds981e4jok811in7urz.mysql.rds.aliyuncs.com',
+	'hostname' => 'rdsof157q3ddbqsyhcuv.mysql.rds.aliyuncs.com',
 	'username' => 'huangang',
 	'password' => '2012810505',
 	'database' => 'recite_words_app',
