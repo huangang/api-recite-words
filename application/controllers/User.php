@@ -85,7 +85,7 @@ class User extends MY_Controller{
         $user = $user_model->get_user(array('openid' => $openid));
         $this->load->helper('url');
         if($user){
-            redirect('http://app.pupued.com/#/login?openid='.$openid.'&uid='.$user->id.'&nickname='.$user->nickname.'&head='.$user->head);
+            redirect('http://app.pupued.com/#/wx-login?openid='.$openid.'&uid='.$user->id.'&nickname='.$user->nickname.'&head='.$user->head);
         }else{
             $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".APPID."&redirect_uri=http://" .$_SERVER['HTTP_HOST']. "/user/oauth/&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
             redirect($url);
@@ -124,7 +124,7 @@ class User extends MY_Controller{
         $user_id = $user_model->create($user_data);
         $user = $user_model->get_user(array('id' => $user_id, 'openid' => $user_info['openid']));
         $this->load->helper('url');
-        redirect('http://app.pupued.com/#/login?openid='.$user_info['openid'].'&uid='.$user->id.'&nickname='.$user->nickname.'&head='.$user->head);
+        redirect('http://app.pupued.com/#/wx-login?openid='.$user_info['openid'].'&uid='.$user->id.'&nickname='.$user->nickname.'&head='.$user->head);
     }
 
     /**
