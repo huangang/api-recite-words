@@ -28,7 +28,8 @@
 class Model_bus{
 
     private static $_common_model     = null;
-    private static $_user_model     = null;
+    private static $_user_model       = null;
+    private static $_config_model       = null;
 
 
     /**
@@ -78,4 +79,13 @@ class Model_bus{
         return self::$_user_model;
     }
 
+    /**
+     * @return Config_model
+     */
+    public static function get_config_model(){
+        if( self::$_config_model == null ){
+            self::$_config_model = self::_load('Config');
+        }
+        return self::$_config_model;
+    }
 }
