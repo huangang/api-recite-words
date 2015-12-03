@@ -86,9 +86,9 @@ class Config_model extends MY_Model{
     public function get_study_num($uid){
         $this->db->from('app_study_plan');
         $this->db->where('uid', $uid);
-        $this->db->select('num');
+        $this->db->select('day_num');
         $ret = $this->db->get()->row();
-        return $ret ? $ret->num : false;
+        return $ret ? $ret->day_num : false;
     }
 
 

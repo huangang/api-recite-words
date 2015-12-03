@@ -52,8 +52,15 @@ class User extends MY_Controller{
      * @author  huangang
      */
     public function login(){
-        $mobile = $this->input->post_get('mobile');
-        $password = $this->input->post_get('password');
+        $mobile = (int)$this->input->post_get('mobile', TRUE);
+        $password = (string)$this->input->post_get('password',TRUE);
+        $user_model = $this->Model_bus->get_user_model();
+        $user = $user_model->get_user(array('mobile' => $mobile, 'password' => $password));
+        if($user){
+            $this->output($user,self::success, JSON_NUMERIC_CHECK);
+        }else{
+            $this->output(array('msg' => 'login fail'), ErrorCodes::not_found);
+        }
     }
 
 

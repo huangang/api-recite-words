@@ -62,13 +62,33 @@ class Config extends  MY_Controller{
         }
     }
 
-
+    /**
+     * 获取用户每天学习数量
+     *
+     *
+     * @internal param int $uid `required` 用户ID
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
     public function get_study_num(){
-        $uid = $this->input->post_get('uid');
+        $uid = $this->input->get_post('uid');
         $config_model = $this->Model_bus->get_config_model();
         $num = $config_model->get_study_num($uid);
         if($num){
-            $this->output(array('study_num' => $num));
+            $this->output(array('study_num' => (int)$num));
         }else{
             $config_model->set_study_num($uid, $config_model::DEFAULT_DAY);
             $this->output(array('study_num' => $config_model::DEFAULT_DAY));
