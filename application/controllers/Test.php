@@ -47,4 +47,12 @@ class Test extends MY_Controller{
             var_dump($v);
         }
     }
+
+
+
+    public function rand_word(){
+        $ret = $this->Model_bus->get_study_model()->rand_unfamiliar_word(1);
+        echo $this->db->last_query();
+        dump($ret);
+    }
 }

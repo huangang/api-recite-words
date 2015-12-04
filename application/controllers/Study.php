@@ -15,41 +15,45 @@
 
 
 /**
- * Common Model Class
- * 公共函数model
+ * Study Controller Class
+ * 学习接口
  *
  *
  * @package       ReciteWords
- * @subpackage    Model
- * @category      Common
+ * @subpackage    Controller
+ * @category      Study
  * @author        huangang
  * @link
  */
-class Common_model extends MY_Model{
+class Study extends MY_Controller{
 
     /**
-     * 记录每次请求
+     * 获取学习单词
      *
      *
-     * @param array  $params `required` 请求参数
-     * @param string $router `required` 请求路径
+     * @internal param int $uid `required` 用户ID
      *
      *
      * ------
      *
-     * @return void
+     * @return json
      *
      * ```
      * 返回结果
-     *
+     *  {
+     *  }
      * ```
      *
      *------------
      * @version 1.0.0
      * @author  huangang
      */
-    public function record_quest($params, $router){
-        $this->_insert_ignore('app_quest_record',array('params'=> json_encode($params,true) , 'router' => $router));
+    public function get_word(){
+        $uid = (int)$this->input->get_post('uid', TRUE);
+        $ret = $this->Model_bus->get_study_model()->rand_unfamiliar_word($uid);
+        $this->output($ret);
     }
+
+
 
 }

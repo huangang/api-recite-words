@@ -25,7 +25,6 @@
  * @author        huangang
  * @link
  */
-
 class Config extends  MY_Controller{
 
 

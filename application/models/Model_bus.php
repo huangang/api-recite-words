@@ -29,7 +29,8 @@ class Model_bus{
 
     private static $_common_model     = null;
     private static $_user_model       = null;
-    private static $_config_model       = null;
+    private static $_config_model     = null;
+    private static $_study_model       = null;
 
 
     /**
@@ -87,5 +88,15 @@ class Model_bus{
             self::$_config_model = self::_load('Config');
         }
         return self::$_config_model;
+    }
+
+    /**
+     * @return Study_model
+     */
+    public static function get_study_model(){
+        if( self::$_study_model == null ){
+            self::$_study_model = self::_load('Study');
+        }
+        return self::$_study_model;
     }
 }
