@@ -51,8 +51,14 @@ class Test extends MY_Controller{
 
 
     public function rand_word(){
-        $ret = $this->Model_bus->get_study_model()->rand_unfamiliar_word(1);
+        $ret = $this->Model_bus->get_study_model()->rand_unskilled_word(1);
         echo $this->db->last_query();
         dump($ret);
+    }
+
+    public function today_num(){
+        $num =  $this->Model_bus->get_study_model()->get_today_study_num(7);
+        echo $this->db->last_query();
+        dump($num);
     }
 }

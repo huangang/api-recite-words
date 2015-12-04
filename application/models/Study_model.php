@@ -27,7 +27,8 @@
  */
 class Study_model extends MY_Model{
 
-
+    const STATUS_SKILLED = 1;
+    const STATUS_UNSKILLED = 0;
 
     /**
      * 随机返回一个不熟练的学习单词
@@ -47,7 +48,7 @@ class Study_model extends MY_Model{
      * @version 1.0.0
      * @author  huangang
      */
-    public function rand_unfamiliar_word($uid){
+    public function rand_unskilled_word($uid){
         $this->db->from('app_words w');
         $this->db->join('app_study_record r', 'r.word = w.word and r.status != 1 and r.uid ='.$uid,'left');
         $this->db->select('w.word,w.meaning,w.example');
@@ -113,4 +114,62 @@ class Study_model extends MY_Model{
         return $this->db->count_all_results();
     }
 
+
+    /**
+     * 记录学习单词
+     *
+     * @param int     $uid `required`    用户ID
+     * @param string  $word `required`   单词
+     * @param int     $status `required` 学习的掌握度
+     *
+     * ------
+     *
+     * @return int 插入的ID
+     *
+     * ```
+     * 返回结果
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function record_study($uid, $word , $status = self::STATUS_UNSKILLED){
+        if($this->check_today_record_study($uid, $word)){
+            return false;
+        }
+        $data = array('uid' => $uid, 'word' => $word, 'status' => $status);
+        $affected_rows = $this->_insert_ignore('app_study_record', $data);
+        return $affected_rows ? $this->db->insert_id() : false;
+    }
+
+    /**
+     * 验证今天是否学过一样的单词
+     *
+     * @param int     $uid `required`    用户ID
+     * @param string  $word `required`   单词
+     *
+     * ------
+     *
+     * @return boolean
+     *
+     * ```
+     * 返回结果
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function check_today_record_study($uid, $word){
+        $time = strtotime(date("Y-m-d"));//今天0点
+        $this->db->from('app_study_record');
+        $this->db->where('uid', $uid);
+        $this->db->where('word', $word);
+        $this->db->where('create_time > '. $time);
+        $ret = $this->db->get()->row();
+        return $ret ? true : false;
+    }
 }
