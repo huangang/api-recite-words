@@ -87,6 +87,7 @@ class Study_model extends MY_Model{
      * 获取今天已经学习的数量
      *
      * @param int  $uid `required` 用户ID
+     * @param int  $status `required` 学习的掌握度
      *
      * ------
      *
@@ -101,11 +102,14 @@ class Study_model extends MY_Model{
      * @version 1.0.0
      * @author  huangang
      */
-    public function get_today_study_num($uid){
+    public function get_today_study_num($uid, $status = null){
         $time = strtotime(date("Y-m-d"));//今天0点
         $this->db->from('app_study_record');
         $this->db->where('uid', $uid);
         $this->db->where('create_time > '. $time);
+        if($status != null){
+            $this->db->where('status', $status);
+        }
         return $this->db->count_all_results();
     }
 

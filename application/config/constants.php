@@ -90,3 +90,5 @@ define('APPID', 'wxec860643e19e028a');
 define('APPSECRET','d4624c36b6795d1d99dcf0547af5443d');
 define('Token', 'huangang');
 define('ENCODINGAESKEY', '');
+//扇贝api
+define('QUERY_WORD_API','https://api.shanbay.com/bdc/search/?word=');

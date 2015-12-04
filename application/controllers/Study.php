@@ -51,7 +51,14 @@ class Study extends MY_Controller{
     public function get_word(){
         $uid = (int)$this->input->get_post('uid', TRUE);
         $ret = $this->Model_bus->get_study_model()->rand_unfamiliar_word($uid);
-        $this->output($ret);
+        $word_info = file_get_contents(QUERY_WORD_API.$ret['word']);
+        $word_info = json_decode($word_info, TRUE);
+        $word['word'] = $word_info['data']['content'];//单词
+        $word['pronunciation'] = $word_info['data']['pronunciation'];//音标
+        $word['definition'] = $word_info['data']['definition'];//中文释义
+        $word['audio'] = $word_info['data']['audio'];//发音
+        $word['example'] = $ret['example'];//例子
+        $this->output($word);
     }
 
 
