@@ -89,11 +89,12 @@ class Config extends  MY_Controller{
         $this->check_parameter(array('uid' => $uid));
         $config_model = $this->Model_bus->get_config_model();
         $num = $config_model->get_study_num($uid);
+        $residue_num = $this->Model_bus->get_study_model()->get_today_study_num($uid);
         if($num){
-            $this->output(array('studyNum' => (int)$num));
+            $this->output(array('studyNum' => (int)$num, 'residueNum' => $residue_num));
         }else{
             $config_model->set_study_num($uid, $config_model::DEFAULT_DAY);
-            $this->output(array('studyNum' => $config_model::DEFAULT_DAY));
+            $this->output(array('studyNum' => $config_model::DEFAULT_DAY, 'residueNum' => $residue_num));
         }
     }
 
