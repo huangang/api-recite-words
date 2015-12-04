@@ -87,7 +87,7 @@ class User extends MY_Controller{
      * @author  huangang
      */
     public function wx_login(){
-        $openid = $this->input->get_post('openid');
+        $openid = $this->input->get_post('openid', TRUE);
         $user_model = $this->Model_bus->get_user_model();
         $user = $user_model->get_user(array('openid' => $openid));
         $this->load->helper('url');
@@ -123,7 +123,7 @@ class User extends MY_Controller{
      * @author  huangang
      */
     public function oauth(){
-        $code = $this->input->get_post('code');
+        $code = $this->input->get_post('code', TRUE);
         $user_info = $this->get_wx_user_info($code);
         $user_data = array('openid' => $user_info['openid'],'nickname' => $user_info['nickname'],
             'head' => $user_info['headimgurl']);
@@ -193,6 +193,37 @@ class User extends MY_Controller{
         $user_info_json = https_request($user_info_url);
         $user_info_array = json_decode($user_info_json, true);
         return $user_info_array;
+    }
+
+
+    /**
+     * 微信获取用户信息
+     *
+     *
+     * @internal  param string $openid `required` openid
+     * @internal  param int $uid `required` 用户ID
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function wx_get_user_info(){
+        $openid = $this->input->get_post('openid',TRUE);
+        $uid = (int)$this->input->get_post('uid',TRUE);
+        $user_model = $this->Model_bus->get_user_model();
+        $user = $user_model->get_user(array('openid' => $openid,'id' => $uid));
+        $this->output($user, self::success, JSON_NUMERIC_CHECK);
     }
 
 

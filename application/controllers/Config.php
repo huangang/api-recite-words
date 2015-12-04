@@ -52,11 +52,12 @@ class Config extends  MY_Controller{
      * @author  huangang
      */
     public function set_study_num(){
-        $uid = $this->input->post_get('uid');
-        $num = $this->input->post_get('num');
+        $uid = (int)$this->input->post_get('uid', true);
+        $num = (int)$this->input->post_get('num', true);
+        $num =  empty($num) ? 20 : $num;
         $ret = $this->Model_bus->get_config_model()->set_study_num($uid, $num);
         if($ret){
-            $this->output(array('study_num' => $num));
+            $this->output(array('studyNum' => $num));
         }else{
             $this->output(array('msg' => 'set fails', ErrorCodes::response_error));
         }
@@ -84,14 +85,14 @@ class Config extends  MY_Controller{
      * @author  huangang
      */
     public function get_study_num(){
-        $uid = $this->input->get_post('uid');
+        $uid = (int)$this->input->get_post('uid', true);
         $config_model = $this->Model_bus->get_config_model();
         $num = $config_model->get_study_num($uid);
         if($num){
-            $this->output(array('study_num' => (int)$num));
+            $this->output(array('studyNum' => (int)$num));
         }else{
             $config_model->set_study_num($uid, $config_model::DEFAULT_DAY);
-            $this->output(array('study_num' => $config_model::DEFAULT_DAY));
+            $this->output(array('studyNum' => $config_model::DEFAULT_DAY));
         }
     }
 

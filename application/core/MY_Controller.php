@@ -86,6 +86,7 @@ class MY_Controller extends CI_Controller{
             echo $_GET['callback']."([".json_encode($ret, $json_options)."])";
         }else{
             header('Content-Type: application/json');
+            header('Access-Control-Allow-Origin: *');
             echo json_encode( $ret , $json_options);//JSON_NUMERIC_CHECK
         }
     }
