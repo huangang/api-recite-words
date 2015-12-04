@@ -52,6 +52,7 @@ class Config extends  MY_Controller{
      */
     public function set_study_num(){
         $uid = (int)$this->input->post_get('uid', true);
+        $this->check_parameter(array('uid' => $uid));
         $num = (int)$this->input->post_get('num', true);
         $num =  empty($num) ? 20 : $num;
         $ret = $this->Model_bus->get_config_model()->set_study_num($uid, $num);
@@ -85,6 +86,7 @@ class Config extends  MY_Controller{
      */
     public function get_study_num(){
         $uid = (int)$this->input->get_post('uid', true);
+        $this->check_parameter(array('uid' => $uid));
         $config_model = $this->Model_bus->get_config_model();
         $num = $config_model->get_study_num($uid);
         if($num){

@@ -50,6 +50,7 @@ class Study extends MY_Controller{
      */
     public function get_word(){
         $uid = (int)$this->input->get_post('uid', TRUE);
+        $this->check_parameter(array('uid' => $uid));
         $ret = $this->Model_bus->get_study_model()->rand_unfamiliar_word($uid);
         $word_info = file_get_contents(QUERY_WORD_API.$ret['word']);
         $word_info = json_decode($word_info, TRUE);
@@ -60,6 +61,16 @@ class Study extends MY_Controller{
         $word['en_definition'] = $word_info['data']['en_definition'];
         $word['example'] = $ret['example'];//例子
         $this->output($word);
+    }
+
+
+
+    public function record(){
+        $uid = (int)$this->input->post_get('uid', TRUE);
+        $this->check_parameter(array('uid' => $uid));
+        $status = (int)$this->input->post_get('status', TRUE);
+        $word = (string)$this->input->post_get('word', TRUE);
+        $this->check_parameter(array('word' => $word));
     }
 
 
