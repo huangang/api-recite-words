@@ -59,7 +59,7 @@ class User extends MY_Controller{
         if($user){
             $this->output($user,self::success, JSON_NUMERIC_CHECK);
         }else{
-            $this->output(array('msg' => 'login fail'), ErrorCodes::not_found);
+            $this->output(array('msg' => 'login fail'), ErrorCodes::logic_error);
         }
     }
 
