@@ -32,7 +32,7 @@ class Study_model extends MY_Model{
     /**
      * 随机返回一个不熟练的学习单词
      *
-     *@param int  $uid `required` 用户ID
+     * @param int  $uid `required` 用户ID
      *
      * ------
      *
@@ -80,6 +80,33 @@ class Study_model extends MY_Model{
         $this->db->order_by('w.id','RANDOM');
         $this->db->limit(1);
         return $this->db->get()->row_array();
+    }
+
+
+    /**
+     * 获取今天已经学习的数量
+     *
+     * @param int  $uid `required` 用户ID
+     *
+     * ------
+     *
+     * @return int
+     *
+     * ```
+     * 返回结果
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function get_today_study_num($uid){
+        $time = strtotime(date("Y-m-d"));//今天0点
+        $this->db->from('app_study_record');
+        $this->db->where('uid', $uid);
+        $this->db->where('create_time > '. $time);
+        return $this->db->count_all_results();
     }
 
 }
