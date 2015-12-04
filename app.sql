@@ -23,6 +23,15 @@ CREATE TABLE `app_dictionary` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='词典表';
 
+DROP TABLE IF EXISTS  `app_quest_record`;
+CREATE TABLE `app_quest_record` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `router` varchar(128) NOT NULL COMMENT '访问路径',
+  `params` text NOT NULL COMMENT '参数',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=431 DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS  `app_study_plan`;
 CREATE TABLE `app_study_plan` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -33,7 +42,19 @@ CREATE TABLE `app_study_plan` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uid` (`uid`) USING BTREE,
   CONSTRAINT `uid` FOREIGN KEY (`uid`) REFERENCES `app_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS  `app_study_record`;
+CREATE TABLE `app_study_record` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) unsigned NOT NULL COMMENT '用户id',
+  `word` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '学习的单词',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1-掌握,0-没掌握',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`) USING BTREE,
+  KEY `word` (`word`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  `app_user`;
 CREATE TABLE `app_user` (
@@ -48,7 +69,7 @@ CREATE TABLE `app_user` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1-正常,-1冻结',
   PRIMARY KEY (`id`),
   UNIQUE KEY `openid` (`openid`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 DROP TABLE IF EXISTS  `app_words`;
 CREATE TABLE `app_words` (
