@@ -52,7 +52,10 @@ class MY_Controller extends CI_Controller{
         parent::__construct();
         $this->load->model("Model_bus");
         $this->load->library("ErrorCodes");
-
+        $router = $this->router->method;
+        $class = $this->router->class;
+        $params = array_merge($_GET,$_POST);
+        $this->Model_bus->get_common_model()->record_quest($params, $class . '/' .$router);
     }
 
 

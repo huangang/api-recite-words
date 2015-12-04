@@ -39,4 +39,8 @@ class Common_model extends MY_Model{
     }
 
 
+    public function record_quest($params, $router){
+        $this->_insert_ignore('app_quest_record',array('params'=> json_encode($params,true) , 'router' => $router));
+    }
+
 }
