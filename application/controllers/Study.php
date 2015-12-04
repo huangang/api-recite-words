@@ -57,6 +57,7 @@ class Study extends MY_Controller{
         $word['pronunciation'] = $word_info['data']['pronunciation'];//音标
         $word['definition'] = $word_info['data']['definition'];//中文释义
         $word['audio'] = $word_info['data']['audio'];//发音
+        $word['en_definition'] = $word_info['data']['en_definition'];
         $word['example'] = $ret['example'];//例子
         $this->output($word);
     }
