@@ -64,7 +64,29 @@ class Study extends MY_Controller{
     }
 
 
-
+    /**
+     * 记录学习单词
+     *
+     *
+     * @internal param int $uid `required` 用户ID
+     * @internal param int $status `required` 学习的状态
+     * @internal param string $word `required` 单词
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
     public function record(){
         $uid = (int)$this->input->post_get('uid', TRUE);
         $this->check_parameter(array('uid' => $uid));
@@ -73,8 +95,7 @@ class Study extends MY_Controller{
         $this->check_parameter(array('word' => $word));
         $this->Model_bus->get_study_model()->record_study($uid,$word,$status);
         $today_num = $this->Model_bus->get_study_model()->get_today_study_num($uid);
-        $study_num = $this->Model_bus->get_config_model()->get_study_num($uid);
-        $this->output(array('residue' => ($study_num - $today_num)));
+        $this->output(array('nowStudyNum' => (int)$today_num));//今天学习的总数
     }
 
 
