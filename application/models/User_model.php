@@ -104,4 +104,33 @@ class User_model extends MY_Model{
         $affected_rows = $this->_insert_ignore('app_user', $data);
         return $affected_rows ? $this->db->insert_id() : false;
     }
+
+    /**
+     * 验证用户字段某个值的唯一性
+     *
+     * @param string $k `required` 字段名
+     * @param mixed $v `required` 值
+     *
+     * ------
+     *
+     * @return  boolean
+     *
+     * ```
+     * 返回结果
+     *  有 true, 无 false
+     *
+     * ```
+     *
+     *------------
+     * @throws Exception
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function check_value($k, $v){
+        $this->db->from('app_user');
+        $this->db->where($k, $v);
+        $this->db->select();
+        $ret = $this->db->get()->row();
+        return $ret ? true : false;
+    }
 }

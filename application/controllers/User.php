@@ -141,7 +141,9 @@ class User extends MY_Controller{
     /**
      * app注册
      *
-     *
+     * @internal param string $mobile `required` 用户注册手机号
+     * @internal param string $nickname `required` 昵称
+     * @internal param string $password `required` 用户密码，md5加密后
      *
      *
      * ------
@@ -159,7 +161,28 @@ class User extends MY_Controller{
      * @author  huangang
      */
     public function register(){
-
+        $mobile = $this->input->post_get('mobile', TRUE);
+        $this->check_parameter(array('mobile' => $mobile));
+        if($this->Model_bus->get_user_model()->check_value('mobile',$mobile)){
+            $this->output(array('msg' => '手机号已注册请直接登录', ErrorCodes::API_ERROR));
+            exit;
+        }
+        $nickname = $this->input->post_get('nickname', TRUE);
+        $nickname = trim($nickname);
+        $this->check_parameter(array('nickname' => $nickname));
+        if($this->Model_bus->get_user_model()->check_value('nickname',$nickname)){
+            $this->output(array('msg' => '昵称已经存在,请更换', ErrorCodes::API_ERROR));
+            exit;
+        }
+        $password = $this->input->post_get('password', TRUE);
+        $this->check_parameter(array('password' => $password));
+        $data = array('nickname' => $nickname,'mobile' => $mobile,'password' => $password);
+        $ret = $this->Model_bus->get_user_model()->create($data);
+        if(!empty($ret)){
+            $this->output(array('id' => $ret ,'nickname' => $nickname));
+        }else{
+            $this->output(array('msg' => '注册失败', ErrorCodes::API_ERROR));
+        }
     }
 
 
