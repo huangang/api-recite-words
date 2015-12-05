@@ -30,6 +30,8 @@ class Home extends MY_Controller{
 
     private $content = null;
     private $open_id = null;
+    private $weObj   = null;
+
     /**
      * 初始化
      */
@@ -37,6 +39,16 @@ class Home extends MY_Controller{
     {
         parent::__construct();
         @$this->load->library('Wechat');
+        if(empty($this->weObj)){
+            $options = array(
+                'token'=> Token, //填写你设定的key
+                //'encodingaeskey'=> ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+                'appid' => APPID,
+                'appsecret' => APPSECRET,
+                'debug' => true,
+            );
+            $this->weObj = new Wechat($options);
+        }
     }
 
     /**
@@ -58,33 +70,25 @@ class Home extends MY_Controller{
      * @author  huangang
      */
     public function index(){
-        $options = array(
-            'token'=> Token, //填写你设定的key
-            //'encodingaeskey'=> ENCODINGAESKEY, //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-            'appid' => APPID,
-            'appsecret' => APPSECRET,
-            'debug' => true,
-        );
-        $weObj = new Wechat($options);
-        $weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
-        $this->open_id = $weObj->getRev()->getRevFrom();
-        $this->content = $weObj->getRev()->getRevContent();
+        $this->weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
+        $this->open_id = $this->weObj->getRev()->getRevFrom();
+        $this->content = $this->weObj->getRev()->getRevContent();
         $this->content = $this->safe_replace($this->content);
-        $type = $weObj->getRev()->getRevType();
+        $type = $this->weObj->getRev()->getRevType();
         switch($type) {
             /*文本事件回复*/
             case Wechat::MSGTYPE_TEXT:
                 $reply = $this->reply_func($this->content);
                 if(is_string($reply)){
-                    $weObj->text($reply)->reply();
+                    $this->weObj->text($reply)->reply();
                 } else if(is_array($reply)) {
-                    $weObj->news($reply)->reply();
+                    $this->weObj->news($reply)->reply();
                 }
                 exit;
                 break;
             /*关注事件回复*/
-            case Wechat::MSGTYPE_EVENT:
-                $weObj->text("hello, I'm wechat")->reply();
+            case Wechat::EVENT_SUBSCRIBE:
+                $this->weObj->text("welcome, I'm wechat")->reply();
                 exit;
                 break;
             /*地理事件回复*/
@@ -99,8 +103,37 @@ class Home extends MY_Controller{
             case Wechat::MSGTYPE_VOICE:
                 exit;
                 break;
+            /*事件*/
+            case Wechat::MSGTYPE_EVENT:
+                $rev_data = $this->weObj->getRevEvent();
+                $event = $rev_data['event'];
+                $key = $rev_data['key'];
+                switch($event){
+                    case Wechat::EVENT_MENU_CLICK:
+                        $word = $this->Model_bus->get_study_model()->rand_word();
+                        $word_info = file_get_contents(QUERY_WORD_API.$word['word']);
+                        $word_info = json_decode($word_info);
+                        $word['meaning'] = str_replace("<br>",'',$word['meaning']);
+                        $content = '单词:'.$word['word'] . "\n"
+                                   .'释义:'.$word['meaning'] ."\n"
+                                   .'音标:'.$word_info->data->pronunciation . "\n"
+                                   .'';
+                        if(!empty($word['example'])){
+                            $word['example'] = str_replace('/r/n',"",$word['example']);
+                            $word['example'] = str_replace(' ',"",$word['example']);
+                            $content = $content . "\n" .
+                                "例子:".$word['example'];
+                        }
+                        $this->weObj->text($content)->reply();
+                        exit;
+                        break;
+                    default:
+                        $this->weObj->text($event)->reply();
+                }
+                exit;
+                break;
             default:
-                $weObj->text("help info")->reply();
+                $this->weObj->text($type)->reply();
         }
     }
 
@@ -345,6 +378,20 @@ class Home extends MY_Controller{
                 $reply = $this->tu_ling($text);
         }
         return $reply;
+    }
+
+
+
+    public function  set_menu(){
+        $new_menu =  array(
+    		"button"=>
+  			array(
+                array('type'=>'click','name'=>'背单词','key'=>'Recite_Words'),
+  				array('type'=>'view', 'name'=>'登录','url'=>'http://app.pupued.com/#/login'),
+            )
+ 		);
+        $result = $this->weObj->createMenu($new_menu);
+        dump($result);
     }
 
 
