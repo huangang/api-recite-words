@@ -26,11 +26,11 @@
  * @link
  */
 class Model_bus{
-
+    private static $_base_model       = null;
     private static $_common_model     = null;
     private static $_user_model       = null;
     private static $_config_model     = null;
-    private static $_study_model       = null;
+    private static $_study_model      = null;
 
 
     /**
@@ -56,6 +56,16 @@ class Model_bus{
                 }
             }
         }
+    }
+
+    /**
+     * @return Base_model
+     */
+    public static function get_base_model(){
+        if( self::$_base_model == null ){
+            self::$_base_model = self::_load('Base');
+        }
+        return self::$_base_model;
     }
 
 
