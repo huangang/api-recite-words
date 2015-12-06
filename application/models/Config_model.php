@@ -30,6 +30,7 @@ class Config_model extends MY_Model{
     const DEFAULT_DAY = 50;
 
     /**
+     * @deprecated
      * 设置用户每天学习单词量
      *
      *
@@ -63,6 +64,7 @@ class Config_model extends MY_Model{
 
 
     /**
+     * @deprecated
      * 获取用户每天学习单词量
      *
      *

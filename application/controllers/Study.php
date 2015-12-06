@@ -100,4 +100,34 @@ class Study extends MY_Controller{
 
 
 
+    /**
+     * 获取用户当天学习数量
+     *
+     *
+     * @internal param int $uid `required` 用户ID
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function get_study_num(){
+        $uid = (int)$this->input->get_post('uid', true);
+        $this->check_parameter(array('uid' => $uid));
+        $num = $this->Model_bus->get_study_model()->get_today_study_num($uid);
+        $this->output(array('nowStudyNum' => $num));
+    }
+
+
+
 }

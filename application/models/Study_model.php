@@ -107,7 +107,7 @@ class Study_model extends MY_Model{
         $time = strtotime(date("Y-m-d"));//今天0点
         $this->db->from('app_study_record');
         $this->db->where('uid', $uid);
-        $this->db->where('create_time > '. $time);
+        $this->db->where('unix_timestamp(create_time) > '. $time);
         if($status != null){
             $this->db->where('status', $status);
         }
