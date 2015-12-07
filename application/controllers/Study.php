@@ -128,6 +128,44 @@ class Study extends MY_Controller{
         $this->output(array('nowStudyNum' => $num));
     }
 
-
+    /**
+     * 单词搜索
+     *
+     *
+     * @internal param string $word `required` 单词
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function search_word(){
+        $word = $this->input->get_post('word', true);
+        $word = trim($word);
+        $data = file_get_contents(SEARCH_WORD_API . $word);
+        $data = json_decode($data, true);
+        if(!empty($data['mark'])){
+            $example = '';
+            if(!empty($data['es'])){
+                foreach($data['es'] as $k => $v){
+                    $example = $example . $v['sentence'] . "\n" . $v['translate'];
+                }
+            }
+            $this->Model_bus->get_study_model()->add_word($data['word'], $data['explain'], $example);
+            $this->output($data);
+        }else{
+            $this->output(array('msg' => '没有查询到'), ErrorCodes::logic_error);
+        }
+    }
 
 }

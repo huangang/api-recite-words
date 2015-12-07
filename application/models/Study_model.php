@@ -172,4 +172,30 @@ class Study_model extends MY_Model{
         $ret = $this->db->get()->row();
         return $ret ? true : false;
     }
+
+
+    /**
+     * 插入一个新的单词
+     *
+     * @param string  $word    `required`   单词
+     * @param string  $meaning `required`   单词意思
+     * @param string  $example `optional`   单词例子
+     *
+     * ------
+     *
+     * @return void
+     *
+     * ```
+     * 返回结果
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function add_word($word, $meaning, $example = null){
+        $data = array('word' => $word, 'meaning' => $meaning, 'example' => $example);
+        $this->_insert_ignore('app_words', $data);
+    }
 }

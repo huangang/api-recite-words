@@ -92,3 +92,6 @@ define('Token', 'huangang');
 define('ENCODINGAESKEY', '');
 //扇贝api
 define('QUERY_WORD_API','https://api.shanbay.com/bdc/search/?word=');
+//boapi
+define('BOAPI_APP_KEY','4bbad3325dfc455897e7164c627c0c62');
+define('SEARCH_WORD_API','http://service.boapi.net/EnWord/EnWord.ashx?appkey='.BOAPI_APP_KEY.'&type=w&word=');
