@@ -224,4 +224,32 @@ class Study extends MY_Controller{
         $data = json_decode($data, true);
         $this->output($data);
     }
+
+    /**
+     * 学习统计
+     *
+     *
+     * @internal param int $uid `required` 用户ID
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function statistics(){
+        $uid = $this->input->get_post('uid', true);
+        $this->check_parameter(array('uid' => $uid));
+        $data = $this->Model_bus->get_study_model()->statistics($uid);
+        $this->output($data);
+    }
 }
