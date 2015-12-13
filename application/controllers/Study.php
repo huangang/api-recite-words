@@ -195,4 +195,33 @@ class Study extends MY_Controller{
         $this->output($data);
     }
 
+    /**
+     * 翻译
+     *
+     *
+     * @internal param string $content `required` 翻译内容
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function translation(){
+        $content = $this->input->get_post('content', true);
+        $content = trim($content);
+        $content = urlencode($content);
+        $data = file_get_contents(TRANSLATION_API. $content);
+        $data = json_decode($data, true);
+        $this->output($data);
+    }
 }
