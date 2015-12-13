@@ -168,4 +168,31 @@ class Study extends MY_Controller{
         }
     }
 
+    /**
+     * 每日一句
+     *
+     *
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function daily_sentence(){
+        $data = file_get_contents(DAILY_SENTENCE_API);
+        $data = json_decode($data, TRUE);
+        unset($data['voice']);
+        $this->output($data);
+    }
+
 }
