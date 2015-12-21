@@ -257,5 +257,38 @@ class User extends MY_Controller{
 
 
 
-
+    /**
+     * 更新用户信息
+     *
+     *
+     * @internal  param int $uid `required` 用户ID
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function update(){
+        $uid = (int)$this->input->post_get('uid', TRUE);
+        $nickname = $this->input->post_get('nickname', TRUE);
+        $this->load->library('QiniuUp.php');
+        $avatar = isset($_FILES['avatar']) ? $_FILES['avatar']['tmp_name'] : null;
+        $data = array('nickname' => $nickname);
+        if(!empty($avatar)){
+            $data['head'] = QiniuUp::uploadImg($avatar);
+        }
+        $this->Model_bus->get_user_model()->update($uid, $data);
+        $user = $this->Model_bus->get_user_model()->get_user(array('id' => $uid));
+        $this->output(array('head' => $user->head,'nickname' => $user->nickname));
+    }
 }

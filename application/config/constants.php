@@ -98,4 +98,7 @@ define('SEARCH_WORD_API','http://service.boapi.net/EnWord/EnWord.ashx?appkey='.B
 define('DAILY_SENTENCE_API','http://service.boapi.net/EnWord/EnWord.ashx?appkey='.BOAPI_APP_KEY.'&type=d');
 define('TRANSLATION_API','http://fanyi.youdao.com/openapi.do?keyfrom=pupued&key=976998167&type=data&doctype=json&version=1.1&q=');
 
-
+define('QINIU_ACCESS_KEY','fhLgE3Xh4YBsEBJxuWU7wKAbPIO23FpR4jYdL0pI');
+define('QINIU_SECRET_KEY','n0I4ss1YGEFe1dDaFZwl-vTXHzSGwTgEtBMkyd7-');
+define('QINIU_BUCKET','recite-words');
+define('QINIU_DOMAIN_NAME','http://statics.pupued.com/');

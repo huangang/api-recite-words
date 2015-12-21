@@ -122,7 +122,6 @@ class User_model extends MY_Model{
      * ```
      *
      *------------
-     * @throws Exception
      * @version 1.0.0
      * @author  huangang
      */
@@ -132,5 +131,33 @@ class User_model extends MY_Model{
         $this->db->select();
         $ret = $this->db->get()->row();
         return $ret ? true : false;
+    }
+
+
+
+    /**
+     * 验证用户字段某个值的唯一性
+     *
+     * @param int $uid `required` 用户ID
+     * @param array $data `required` 更新数据
+     *
+     * ------
+     *
+     * @return  int
+     *
+     * ```
+     * 返回结果
+     *  更新的行数
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function update($uid, $data){
+        $this->db->where('id', $uid);
+        $this->db->update('app_user', $data);
+        return $this->db->affected_rows();
     }
 }
