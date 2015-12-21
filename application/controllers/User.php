@@ -280,6 +280,7 @@ class User extends MY_Controller{
      */
     public function update(){
         $uid = (int)$this->input->post_get('uid', TRUE);
+        $this->check_parameter(array('uid' => $uid));
         $nickname = $this->input->post_get('nickname', TRUE);
         $this->load->library('QiniuUp.php');
         $avatar = isset($_FILES['avatar']) ? $_FILES['avatar']['tmp_name'] : null;
@@ -290,5 +291,34 @@ class User extends MY_Controller{
         $this->Model_bus->get_user_model()->update($uid, $data);
         $user = $this->Model_bus->get_user_model()->get_user(array('id' => $uid));
         $this->output(array('head' => $user->head,'nickname' => $user->nickname));
+    }
+
+    /**
+     * 获取用户信息
+     *
+     *
+     * @internal  param int $uid `required` 用户ID
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function get_user(){
+        $uid = (int)$this->input->get_post('uid', TRUE);
+        $this->check_parameter(array('uid' => $uid));
+        $user = $this->Model_bus->get_user_model()->get_user(array('id' => $uid));
+        unset($user->password);
+        $this->output($user, self::success, JSON_NUMERIC_CHECK);
     }
 }
