@@ -57,11 +57,19 @@ class QiniuUp
     }
 
 
-
+    /**
+     * 获取文件扩展名
+     * @param $file
+     * @return string
+     */
     public static function getExtension($file)
     {
         $suffix = mime_content_type($file);
-        return substr(strrchr($suffix, '/'), 1);
+        $name = substr(strrchr($suffix, '/'), 1);
+        if($name == 'jpeg'){
+            return 'jpg';
+        }
+        return $name;
     }
 
 
