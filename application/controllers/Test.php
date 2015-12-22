@@ -66,4 +66,18 @@ class Test extends MY_Controller{
         $ret = $this->Model_bus->get_common_model()->get_lock_value('oBo4ouOkwqzZ0F3gdDoSizebrHAw');
         var_dump($ret);
     }
+
+    public function test_root(){
+        $file_handle = fopen( FCPATH."static/true.txt", "r" );
+        $lines = array();
+        while (!feof($file_handle)) {
+            $line = fgets($file_handle);
+            array_push($lines, $line);
+        }
+        fclose($file_handle);
+        $random = rand(0, count($lines) - 1);
+        $text = $lines[$random];
+        echo $text;
+    }
+
 }

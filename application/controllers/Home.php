@@ -404,6 +404,12 @@ class Home extends MY_Controller{
                     $common_model->lock_reply($this->open_id, Reply::IdiomsSolitaire);
                     $reply = "请输入一个成语开始接龙吧~比如：一马当先\n回复【退出】即可退出和成语接龙模式";
                     break;
+                case Reply::BigDare:
+                case Reply::TruthWords:
+                case Reply::TruthOrDare:
+                    $common_model->lock_reply($this->open_id, Reply::TruthOrDare);
+                    $reply = $this->truth_or_dare();
+                    break;
                 default:
                     $reply = $this->tu_ling($text);
             }
@@ -446,6 +452,8 @@ class Home extends MY_Controller{
             case Reply::IdiomsSolitaire:
                 $reply = $this->idioms($text);
                 break;
+            case Reply::TruthOrDare:
+                $reply = $this->truth_or_dare($text);
         }
         return $reply;
     }
@@ -486,6 +494,67 @@ class Home extends MY_Controller{
             }
             $common_model->lock_reply($this->open_id , Reply::IdiomsSolitaire);
         }
+        return $text;
+    }
+
+
+
+    /**
+     * 真心话大冒险
+     *
+     * @param string $words `required` 值
+     *
+     * ------
+     *
+     * @return  string
+     *
+     * ```
+     * 返回结果
+     *
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    private function truth_or_dare($words = ''){
+        if($words==''){
+            $text = "回复“真”随机选择真心话，回复“冒”随机选择大冒险\n回复【退出】即可退出真心话大冒险游戏";
+        }elseif ($words=='退出') {
+            $text='已退出游戏【真心话大冒险】即可重新开启';
+            $this->Model_bus->get_common_model()->unlocking($this->open_id , Reply::TruthOrDare);
+        }else{
+            switch($words) {
+                case Reply::Truth:
+                case Reply::TruthWords:
+                    $file_handle = fopen( FCPATH."static/true.txt", "r" );
+                    $lines = array();
+                    while (!feof($file_handle)) {
+                        $line = fgets($file_handle);
+                        array_push($lines, $line);
+                    }
+                    fclose($file_handle);
+                    $random = rand(0, count($lines) - 1);
+                    $text = $lines[$random];
+                    break;
+                case Reply::Dare:
+                case Reply::BigDare:
+                    $file_handle = fopen( FCPATH."static/dare.txt", "r");
+                    $lines = array();
+                    while (!feof($file_handle)) {
+                        $line = fgets($file_handle);
+                        array_push($lines, $line);
+                    }
+                    fclose($file_handle);
+                    $random = rand(0, count($lines) - 1);
+                    $text = $lines[$random];
+                    break;
+                default:
+                    $text="好吧，我看不懂啦。\n回复“真”随机选择真心话，回复“冒”随机选择大冒险";
+            }
+        }
+        $text = rtrim($text);
         return $text;
     }
 
