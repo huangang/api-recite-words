@@ -49,6 +49,7 @@ class Home extends MY_Controller{
             );
             $this->weObj = new Wechat($options);
         }
+        $this->load->library('Reply');
     }
 
     /**
@@ -97,7 +98,6 @@ class Home extends MY_Controller{
                 break;
             /*图片事件处理*/
             case Wechat::MSGTYPE_IMAGE:
-                $this->load->library('Reply');
                 $reply = '图片处理';
                 $value = $this->Model_bus->get_common_model()->get_lock_value($this->open_id);
                 if(!empty($value)){
@@ -383,35 +383,111 @@ class Home extends MY_Controller{
      * @author  huangang
      */
     private function reply_func($text){
-        $this->load->library('Reply');
-        $value = $this->Model_bus->get_common_model()->get_lock_value($this->open_id);
-        switch ($text){
-            case Reply::Login:
-                $reply = "<a href='http://api.pupued.com/user/wx_login?openid=$this->open_id' >登录地址</a>";
-                break;
+        $common_model = $this->Model_bus->get_common_model();
+        $value = $common_model->get_lock_value($this->open_id);
+        if(!empty($value)){
+            $reply = $this->lock_reply($value, $text);
+        }else{
+            switch ($text){
+                case Reply::Login:
+                    $reply = "<a href='http://api.pupued.com/user/wx_login?openid=$this->open_id' >登录地址</a>";
+                    break;
+                case Reply::ModifyNickname:
+                    $common_model->lock_reply($this->open_id, Reply::ModifyNickname);
+                    $reply = "请输入新的昵称";
+                    break;
+                case Reply::ModifyAvatar:
+                    $common_model->lock_reply($this->open_id, Reply::ModifyAvatar);
+                    $reply = "请输入图片";
+                    break;
+                case Reply::IdiomsSolitaire:
+                    $common_model->lock_reply($this->open_id, Reply::IdiomsSolitaire);
+                    $reply = "请输入一个成语开始接龙吧~比如：一马当先\n回复【退出】即可退出和成语接龙模式";
+                    break;
+                default:
+                    $reply = $this->tu_ling($text);
+            }
+        }
+
+        return $reply;
+    }
+
+
+
+    /**
+     * 文本回复方法
+     *
+     * @param string $value `required` 用户锁定的值
+     * @param string $text `required` 用户发起的文本内容
+     *
+     * ------
+     *
+     * @return  string
+     *
+     * ```
+     * 返回结果
+     *
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    private function lock_reply($value, $text){
+        $common_model = $this->Model_bus->get_common_model();
+        $reply = '找不到回复';
+        switch($value){
             case Reply::ModifyNickname:
-                $this->Model_bus->get_common_model()->lock_reply($this->open_id, Reply::ModifyNickname);
-                $reply = "请输入新的昵称";
+                $this->Model_bus->get_user_model()->update_by_wx($this->open_id, array('nickname' => $text));
+                $common_model->unlocking($this->open_id, Reply::ModifyNickname);
+                $reply = '昵称修改成功';
                 break;
-            case Reply::ModifyAvatar:
-                $this->Model_bus->get_common_model()->lock_reply($this->open_id, Reply::ModifyAvatar);
-                $reply = "请输入图片";
+            case Reply::IdiomsSolitaire:
+                $reply = $this->idioms($text);
                 break;
-            default:
-                $reply = $this->tu_ling($text);
-                if(!empty($value)){
-                    switch($value){
-                        case Reply::ModifyNickname:
-                            $this->Model_bus->get_user_model()->update_by_wx($this->open_id, array('nickname' => $text));
-                            $this->Model_bus->get_common_model()->unlocking($this->open_id, Reply::ModifyNickname);
-                            $reply = '昵称修改成功';
-                            break;
-                    }
-                }
         }
         return $reply;
     }
 
+
+    /**
+     * 成语接龙
+     *
+     * @param string $key `required` 值
+     *
+     * ------
+     *
+     * @return  string
+     *
+     * ```
+     * 返回结果
+     *
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    private function idioms($key){
+        $common_model = $this->Model_bus->get_common_model();
+        if($key==''){
+            $text = "请输入一个成语开始接龙吧~比如：一马当先\n回复【退出】即可退出和成语接龙模式";
+        }elseif ($key == '退出') {
+            $text = '已退出成语接龙模式，再次发送【成语接龙】即可开启';
+            $common_model->unlocking($this->open_id , Reply::IdiomsSolitaire);
+        }else{
+            $reply=file_get_contents(IDIOMS . $key);
+            if($reply == '别来骗人家，不是随便打4个字就是成语哒！' || $reply=='成语必须为4个汉字'){
+                $text = $reply.'重新输入一个成语开始接龙,输入【退出】退出成语接龙';
+            }else{
+                $text = $reply;
+            }
+            $common_model->lock_reply($this->open_id , Reply::IdiomsSolitaire);
+        }
+        return $text;
+    }
 
     /**
      * 设置按钮
@@ -442,6 +518,9 @@ class Home extends MY_Controller{
         $result = $this->weObj->createMenu($new_menu);
         dump($result);
     }
+
+
+
 
 
 }

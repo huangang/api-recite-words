@@ -106,6 +106,7 @@ class Common_model extends MY_Model{
         $time = time() - $before;
         $this->db->where('unix_timestamp(create_time) >= ' . $time);
         $this->db->where('lock', 1);
+        $this->db->order_by('id','desc');
         $row = $this->_select('app_lock','value', array('openid'=> $openid));
         if(!empty($row)){
             return $row->value;
@@ -140,6 +141,7 @@ class Common_model extends MY_Model{
         $this->db->where('unix_timestamp(create_time) >= ' . $time);
         return $this->_update('app_lock',array('lock' => 0), array('openid' => $openid,'value' => $value));
     }
+
 
 
 }
