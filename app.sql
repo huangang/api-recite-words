@@ -23,6 +23,17 @@ CREATE TABLE `app_dictionary` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='词典表';
 
+DROP TABLE IF EXISTS  `app_lock`;
+CREATE TABLE `app_lock` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `value` text NOT NULL COMMENT '锁定值',
+  `openid` varchar(100) NOT NULL COMMENT '微信openid',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `lock` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1-锁定，0-解锁',
+  PRIMARY KEY (`id`),
+  KEY `openid` (`openid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='微信回复锁定';
+
 DROP TABLE IF EXISTS  `app_quest_record`;
 CREATE TABLE `app_quest_record` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -30,7 +41,7 @@ CREATE TABLE `app_quest_record` (
   `params` text NOT NULL COMMENT '参数',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=431 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3161 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  `app_study_plan`;
 CREATE TABLE `app_study_plan` (
@@ -42,7 +53,7 @@ CREATE TABLE `app_study_plan` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uid` (`uid`) USING BTREE,
   CONSTRAINT `uid` FOREIGN KEY (`uid`) REFERENCES `app_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  `app_study_record`;
 CREATE TABLE `app_study_record` (
@@ -54,7 +65,7 @@ CREATE TABLE `app_study_record` (
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`) USING BTREE,
   KEY `word` (`word`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  `app_user`;
 CREATE TABLE `app_user` (
@@ -69,17 +80,18 @@ CREATE TABLE `app_user` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1-正常,-1冻结',
   PRIMARY KEY (`id`),
   UNIQUE KEY `openid` (`openid`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 DROP TABLE IF EXISTS  `app_words`;
 CREATE TABLE `app_words` (
   `id` int(13) NOT NULL AUTO_INCREMENT,
   `word` varchar(64) NOT NULL,
   `meaning` text NOT NULL,
-  `example` text NOT NULL,
+  `example` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Word` (`word`)
-) ENGINE=InnoDB AUTO_INCREMENT=15329 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15364 DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
 
