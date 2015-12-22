@@ -136,7 +136,7 @@ class User_model extends MY_Model{
 
 
     /**
-     * 验证用户字段某个值的唯一性
+     * 修改用户信息
      *
      * @param int $uid `required` 用户ID
      * @param array $data `required` 更新数据
@@ -157,6 +157,32 @@ class User_model extends MY_Model{
      */
     public function update($uid, $data){
         $this->db->where('id', $uid);
+        $this->db->update('app_user', $data);
+        return $this->db->affected_rows();
+    }
+
+    /**
+     * 修改用户信息在微信中
+     *
+     * @param string $openid `required` openid
+     * @param array $data `required` 更新数据
+     *
+     * ------
+     *
+     * @return  int
+     *
+     * ```
+     * 返回结果
+     *  更新的行数
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function update_by_wx($openid, $data){
+        $this->db->where('openid', $openid);
         $this->db->update('app_user', $data);
         return $this->db->affected_rows();
     }

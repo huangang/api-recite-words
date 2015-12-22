@@ -61,4 +61,9 @@ class Test extends MY_Controller{
         echo $this->db->last_query();
         dump($num);
     }
+
+    public function get_lock_value(){
+        $ret = $this->Model_bus->get_common_model()->get_lock_value('oBo4ouOkwqzZ0F3gdDoSizebrHAw');
+        var_dump($ret);
+    }
 }

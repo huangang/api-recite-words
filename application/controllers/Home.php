@@ -97,6 +97,20 @@ class Home extends MY_Controller{
                 break;
             /*图片事件处理*/
             case Wechat::MSGTYPE_IMAGE:
+                $this->load->library('Reply');
+                $reply = '图片处理';
+                $value = $this->Model_bus->get_common_model()->get_lock_value($this->open_id);
+                if(!empty($value)){
+                    switch($value){
+                        case Reply::ModifyAvatar:
+                            $pic = $this->weObj->getRevPic();
+                            $this->Model_bus->get_user_model()->update_by_wx($this->open_id,array('head' => $pic['picurl']));
+                            $this->Model_bus->get_common_model()->unlocking($this->open_id, Reply::ModifyAvatar);
+                            $reply = '头像修改成功';
+                            break;
+                    }
+                }
+                $this->weObj->text($reply)->reply();
                 exit;
                 break;
             /*语音识别*/
@@ -198,7 +212,6 @@ class Home extends MY_Controller{
     private function tu_ling($keyword) {
         $key = "94e556076c912d2a9f72ba752f8c4750";
         $api_url = "http://www.tuling123.com/openapi/api?key=".$key."&info=". $keyword;
-
         $result = file_get_contents ( $api_url );
         $result = json_decode ( $result, true );
         $articles = array();
@@ -370,18 +383,54 @@ class Home extends MY_Controller{
      * @author  huangang
      */
     private function reply_func($text){
+        $this->load->library('Reply');
+        $value = $this->Model_bus->get_common_model()->get_lock_value($this->open_id);
         switch ($text){
-            case "登录";
+            case Reply::Login:
                 $reply = "<a href='http://api.pupued.com/user/wx_login?openid=$this->open_id' >登录地址</a>";
+                break;
+            case Reply::ModifyNickname:
+                $this->Model_bus->get_common_model()->lock_reply($this->open_id, Reply::ModifyNickname);
+                $reply = "请输入新的昵称";
+                break;
+            case Reply::ModifyAvatar:
+                $this->Model_bus->get_common_model()->lock_reply($this->open_id, Reply::ModifyAvatar);
+                $reply = "请输入图片";
                 break;
             default:
                 $reply = $this->tu_ling($text);
+                if(!empty($value)){
+                    switch($value){
+                        case Reply::ModifyNickname:
+                            $this->Model_bus->get_user_model()->update_by_wx($this->open_id, array('nickname' => $text));
+                            $this->Model_bus->get_common_model()->unlocking($this->open_id, Reply::ModifyNickname);
+                            $reply = '昵称修改成功';
+                            break;
+                    }
+                }
         }
         return $reply;
     }
 
 
-
+    /**
+     * 设置按钮
+     *
+     *
+     * ------
+     *
+     * @return void
+     *
+     * ```
+     * 返回结果
+     *
+     *
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
     public function  set_menu(){
         $new_menu =  array(
     		"button"=>
