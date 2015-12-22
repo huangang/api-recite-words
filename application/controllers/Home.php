@@ -89,7 +89,7 @@ class Home extends MY_Controller{
                 break;
             /*关注事件回复*/
             case Wechat::EVENT_SUBSCRIBE:
-                $this->weObj->text("welcome, I'm wechat")->reply();
+                $this->weObj->text("welcome, I'm pupued")->reply();
                 exit;
                 break;
             /*地理事件回复*/
@@ -409,6 +409,9 @@ class Home extends MY_Controller{
                 case Reply::TruthOrDare:
                     $common_model->lock_reply($this->open_id, Reply::TruthOrDare);
                     $reply = $this->truth_or_dare();
+                    break;
+                case Reply::Help:
+                    $reply = Reply::HelpContent;
                     break;
                 default:
                     $reply = $this->tu_ling($text);

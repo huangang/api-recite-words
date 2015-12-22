@@ -19,4 +19,6 @@ class Reply
     const BigDare = '大冒险';
     const Dare = '冒';
     const TruthOrDare = '真心话大冒险';
+    const HelpContent = "hello, I'm pupued\n平台现有功能:\n智能聊天,成语接龙,真心话大冒险游戏";
+    const Help = '帮助';
 }
