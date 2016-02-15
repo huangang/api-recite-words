@@ -109,6 +109,36 @@ class MY_Controller extends CI_Controller{
     }
 
 
+    /**
+     * 数据类型处理函数
+     * @param array $arr
+     * @param array $except
+     */
+    protected function conversion_data(&$arr , $except = array()){
+        $except = array_unique(array_merge($except, array('nickname')));
+        if(!empty($arr)){
+            foreach($arr as $k  => &$v){
+                if(is_array($v) && !empty($v)){
+                    $this->conversion_data($v, $except);//如果还是数组,进入递归
+                }else{
+                    if(!in_array($k, $except)){
+                        if(is_numeric($v)){
+                            if($v == (int)$v) {
+                                $v = (int)$v;
+                            } elseif($v == (float) $v){
+                                $v = (float)$v;
+                            } elseif($v == (double)$v){
+                                $v = (double)$v;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
 
 }

@@ -347,11 +347,12 @@ class User extends MY_Controller{
      * @author  huangang
      */
     public function get_vocabulary(){
-        $uid = (int)$this->input->post_get('uid', TRUE);
-        $num = (int)$this->input->post_get('num', TRUE);
+        $uid = (int)$this->input->get_post('uid', TRUE);
+        $num = (int)$this->input->get_post('num', TRUE);
         $num = empty($num) ? 10 : $num;
         $since_id = (int)$this->input->post_get('since_id', TRUE);
         $ret = $this->Model_bus->get_vocabulary_model()->gets($uid, $since_id, $num);
-        dump($ret);
+        $this->conversion_data($ret);
+        $this->output($ret);
     }
 }

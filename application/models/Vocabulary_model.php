@@ -36,7 +36,7 @@ class Vocabulary_model extends MY_Model
      */
     public function gets($uid, $since_id, $num){
         $this->db->from('app_vocabulary v');
-        $this->db->select('v.word');
+        $this->db->select('v.id , v.word');
         $this->db->where('v.uid', $uid);
         if($since_id <= 0){
             $this->db->order_by('v.id', 'DESC');
@@ -50,8 +50,7 @@ class Vocabulary_model extends MY_Model
             }
         }
         $this->db->limit(abs($num));
-        $res =  $this->db->get()->result_id();
-        return $res;
+        return $this->db->get()->result_array();
     }
 
     /**
