@@ -32,8 +32,8 @@ class Config extends  MY_Controller{
      * 设置用户每天学习数量
      *
      *
-     * @internal param int $uid `required` 用户ID
-     * @internal param int $num `required` 学习数量
+     * @param int $uid `required` 用户ID
+     * @param int $num `required` 学习数量
      *
      *
      * ------

@@ -32,8 +32,8 @@ class User extends MY_Controller{
      * app登录
      *
      *
-     * @internal param string $mobile `required` 用户注册手机号
-     * @internal param string $password `required` 用户密码，md5加密后
+     * @param string $mobile `required` 用户注册手机号
+     * @param string $password `required` 用户密码，md5加密后
      *
      *
      * ------
@@ -70,7 +70,7 @@ class User extends MY_Controller{
      * 微信登录
      *
      *
-     * @internal param string $openid `required` 微信用户openid
+     * @param string $openid `required` 微信用户openid
      *
      *
      * ------
@@ -108,7 +108,7 @@ class User extends MY_Controller{
      * 微信授权注册
      *
      *
-     * @internal param string $code `required` 微信code
+     * @param string $code `required` 微信code
      *
      *
      * ------
@@ -141,9 +141,9 @@ class User extends MY_Controller{
     /**
      * app注册
      *
-     * @internal param string $mobile `required` 用户注册手机号
-     * @internal param string $nickname `required` 昵称
-     * @internal param string $password `required` 用户密码，md5加密后
+     * @param string $mobile `required` 用户注册手机号
+     * @param string $nickname `required` 昵称
+     * @param string $password `required` 用户密码，md5加密后
      *
      *
      * ------
@@ -227,8 +227,8 @@ class User extends MY_Controller{
      * 微信获取用户信息
      *
      *
-     * @internal  param string $openid `required` openid
-     * @internal  param int $uid `required` 用户ID
+     * @param string $openid `required` openid
+     * @param int $uid `required` 用户ID
      *
      *
      * ------
@@ -261,7 +261,7 @@ class User extends MY_Controller{
      * 更新用户信息
      *
      *
-     * @internal  param int $uid `required` 用户ID
+     * @param int $uid `required` 用户ID
      *
      *
      * ------
@@ -297,7 +297,7 @@ class User extends MY_Controller{
      * 获取用户信息
      *
      *
-     * @internal  param int $uid `required` 用户ID
+     * @param int $uid `required` 用户ID
      *
      *
      * ------
@@ -320,5 +320,37 @@ class User extends MY_Controller{
         $user = $this->Model_bus->get_user_model()->get_user(array('id' => $uid));
         unset($user->password);
         $this->output($user, self::success, JSON_NUMERIC_CHECK);
+    }
+
+
+    /**
+     * 获取用户的单词本
+     *
+     *
+     * @param int $uid `required` 用户ID
+     * @param int $num `optional` 数量
+     * @param int $since_id `optional` 起始ID
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function get_vocabulary(){
+        $uid = (int)$this->input->post_get('uid', TRUE);
+        $num = (int)$this->input->post_get('num', TRUE);
+        $num = empty($num) ? 10 : $num;
+        $since_id = (int)$this->input->post_get('since_id', TRUE);
+
     }
 }

@@ -31,6 +31,7 @@ class Model_bus{
     private static $_user_model       = null;
     private static $_config_model     = null;
     private static $_study_model      = null;
+    private static $_vocabulary_model = null;
 
 
     /**
@@ -108,5 +109,15 @@ class Model_bus{
             self::$_study_model = self::_load('Study');
         }
         return self::$_study_model;
+    }
+
+    /**
+     * @return Vocabulary_model
+     */
+    public static function get_vocabulary_model(){
+        if( self::$_vocabulary_model == null ){
+            self::$_vocabulary_model = self::_load('Vocabulary');
+        }
+        return self::$_vocabulary_model;
     }
 }

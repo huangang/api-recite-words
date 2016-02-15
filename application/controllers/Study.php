@@ -31,7 +31,7 @@ class Study extends MY_Controller{
      * 获取学习单词
      *
      *
-     * @internal param int $uid `required` 用户ID
+     * @param int $uid `required` 用户ID
      *
      *
      * ------
@@ -68,9 +68,9 @@ class Study extends MY_Controller{
      * 记录学习单词
      *
      *
-     * @internal param int $uid `required` 用户ID
-     * @internal param int $status `required` 学习的状态
-     * @internal param string $word `required` 单词
+     * @param int $uid `required` 用户ID
+     * @param int $status `required` 学习的状态
+     * @param string $word `required` 单词
      *
      *
      * ------
@@ -89,12 +89,15 @@ class Study extends MY_Controller{
      */
     public function record(){
         $uid = (int)$this->input->post_get('uid', TRUE);
-        $this->check_parameter(array('uid' => $uid));
-        $status = (int)$this->input->post_get('status', TRUE);
         $word = (string)$this->input->post_get('word', TRUE);
-        $this->check_parameter(array('word' => $word));
-        $this->Model_bus->get_study_model()->record_study($uid,$word,$status);
-        $today_num = $this->Model_bus->get_study_model()->get_today_study_num($uid);
+        $this->check_parameter(array('word' => $word,'uid' => $uid));
+        $status = (int)$this->input->post_get('status', TRUE);
+        $Study_model = $this->Model_bus->get_study_model();
+        $Study_model->record_study($uid,$word,$status);
+        if($status == $Study_model::STATUS_UNSKILLED){
+            $this->Model_bus->get_vocabulary_model()->add($uid, $word);
+        }
+        $today_num = $Study_model->get_today_study_num($uid);
         $this->output(array('nowStudyNum' => (int)$today_num));//今天学习的总数
     }
 
@@ -104,7 +107,7 @@ class Study extends MY_Controller{
      * 获取用户当天学习数量
      *
      *
-     * @internal param int $uid `required` 用户ID
+     * @param int $uid `required` 用户ID
      *
      *
      * ------
@@ -132,7 +135,7 @@ class Study extends MY_Controller{
      * 单词搜索
      *
      *
-     * @internal param string $word `required` 单词
+     * @param string $word `required` 单词
      *
      *
      * ------
@@ -199,7 +202,7 @@ class Study extends MY_Controller{
      * 翻译
      *
      *
-     * @internal param string $content `required` 翻译内容
+     * @param string $content `required` 翻译内容
      *
      *
      * ------
@@ -229,7 +232,7 @@ class Study extends MY_Controller{
      * 学习统计
      *
      *
-     * @internal param int $uid `required` 用户ID
+     * @param int $uid `required` 用户ID
      *
      *
      * ------
