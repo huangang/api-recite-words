@@ -266,6 +266,50 @@ class CI_DB_result {
 		return $this->result_object;
 	}
 
+    // --------------------------------------------------------------------
+    /**
+     * Query result.  "object" version.
+     *
+     * @access	public
+     * @return	object
+     */
+    function result_id($force = false)
+    {
+        if (count($this->result_object) > 0)
+        {
+            return $this->result_object;
+        }
+
+        // In the event that query caching is on, the result_id variable
+        // will not be a valid resource so we'll simply return an empty
+        // array.
+        if ( ! $this->result_id OR $this->num_rows === 0)
+        {
+            return array();
+        }
+
+        if (($c = count($this->result_array)) > 0)
+        {
+            for ($i = 0; $i < $c; $i++)
+            {
+                $this->result_object[$i] = (object) $this->result_array[$i];
+            }
+
+            return $this->result_object;
+        }
+
+        is_null($this->row_data) OR $this->data_seek(0);
+        while ($row = $this->_fetch_object())
+        {
+            $keys = array_keys((array)($row));
+            $first_keys = $keys[0];
+            $this->result_object[$row->$first_keys] = $force ? (array) $row : $row;
+        }
+
+        return $this->result_object;
+    }
+
+
 	// --------------------------------------------------------------------
 
 	/**

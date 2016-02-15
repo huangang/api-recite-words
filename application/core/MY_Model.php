@@ -29,7 +29,7 @@
  * @property CI_Router $router                    Parses URIs and determines routing
  * @property CI_Session $session
  * @property CI_config $config
- *
+ * @property Model_bus $Model_bus
  * @package        ReciteWords
  * @subpackage    API
  * @category    MY_Model
@@ -45,6 +45,7 @@ class MY_Model extends CI_Model{
     public function __construct(){
         parent::__construct();
         $this->load->library("ErrorCodes");
+        $this->load->model("Model_bus");
     }
 
     /**

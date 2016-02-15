@@ -351,6 +351,7 @@ class User extends MY_Controller{
         $num = (int)$this->input->post_get('num', TRUE);
         $num = empty($num) ? 10 : $num;
         $since_id = (int)$this->input->post_get('since_id', TRUE);
-
+        $ret = $this->Model_bus->get_vocabulary_model()->gets($uid, $since_id, $num);
+        dump($ret);
     }
 }

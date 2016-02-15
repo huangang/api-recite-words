@@ -1,9 +1,6 @@
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond $1 !^(index\.php|robots\.txt)
-RewriteRule ^(.*)$ index.php/$1
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(application|modules|plugins|system|themes) index.php/$1 [L]
+<IfModule authz_core_module>
+	Require all denied
+</IfModule>
+<IfModule !authz_core_module>
+	Deny from all
 </IfModule>

@@ -96,6 +96,8 @@ class Study extends MY_Controller{
         $Study_model->record_study($uid,$word,$status);
         if($status == $Study_model::STATUS_UNSKILLED){
             $this->Model_bus->get_vocabulary_model()->add($uid, $word);
+        }elseif($status == $Study_model::STATUS_SKILLED){
+            $this->Model_bus->get_vocabulary_model()->remove($uid, $word);
         }
         $today_num = $Study_model->get_today_study_num($uid);
         $this->output(array('nowStudyNum' => (int)$today_num));//今天学习的总数
