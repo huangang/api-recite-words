@@ -408,4 +408,34 @@ class User extends MY_Controller{
         $this->Model_bus->get_common_model()->feedback($content, $uid);
         $this->output();
     }
+
+    /**
+     * 修改密码
+     *
+     *
+     * @param int $uid `required` 用户ID
+     * @param string $password `required` 密码
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function modify_password(){
+        $uid = (int)$this->input->get_post('uid', TRUE);
+        $password = $this->input->get_post('password', TRUE);
+        $this->check_parameter(['uid' => $uid, 'password' => $password]);
+        $this->Model_bus->get_user_model()->update($uid , ['password' => $password]);
+        $this->output();
+    }
 }
