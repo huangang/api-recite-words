@@ -143,5 +143,18 @@ class Common_model extends MY_Model{
     }
 
 
+    /**
+     * 意见反馈
+     * @param $content
+     * @param $uid
+     * @return int
+     */
+    public function feedback($content, $uid){
+        $data = [
+            'content' => $content,
+            'uid' => $uid
+        ];
+        return $this->_insert_ignore('app_feedback', $data);
+    }
 
 }

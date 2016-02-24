@@ -379,4 +379,33 @@ class User extends MY_Controller{
         $this->Model_bus->get_vocabulary_model()->remove($uid, $vid);
         $this->output();
     }
+
+    /**
+     * 意见反馈
+     *
+     *
+     * @param int $uid `required` 用户ID
+     * @param string $content `required` 反馈内容
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function feedback(){
+        $uid = (int)$this->input->get_post('uid', TRUE);
+        $content = $this->input->get_post('content', TRUE);
+        $this->Model_bus->get_common_model()->feedback($content, $uid);
+        $this->output();
+    }
 }
