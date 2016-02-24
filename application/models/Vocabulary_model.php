@@ -30,26 +30,15 @@ class Vocabulary_model extends MY_Model
     /**
      * 获取生词
      * @param $uid
-     * @param $since_id
-     * @param $num
-     * @return mixed
+     * @return array
      */
-    public function gets($uid, $since_id, $num){
+    public function gets($uid){
         $this->db->from('app_vocabulary v');
-        $this->db->select('v.id , v.word');
+        $this->db->join('app_words w','w.word = v.word','left');
+        $this->db->select('w.meaning');
+        $this->db->select('v.word,v.id');
         $this->db->where('v.uid', $uid);
-        if($since_id <= 0){
-            $this->db->order_by('v.id', 'DESC');
-        }else{
-            if ($num > 0) {
-                $this->db->where('v.id > ' . $since_id);
-                $this->db->order_by('v.id', 'ASC');
-            } else{
-                $this->db->where('v.id < ' . $since_id);
-                $this->db->order_by('v.id', 'DESC');
-            }
-        }
-        $this->db->limit(abs($num));
+        $this->db->order_by('v.create_time','desc');
         return $this->db->get()->result_array();
     }
 
@@ -67,11 +56,11 @@ class Vocabulary_model extends MY_Model
     /**
      * 删除一个新的生词语
      * @param $uid
-     * @param $word
+     * @param $vid
      * @return int
      */
-    public function remove($uid, $word){
-        $where = ['uid' => $uid, 'word' => $word];
+    public function remove($uid, $vid){
+        $where = ['uid' => $uid, 'id' => $vid];
         return $this->_delete('app_vocabulary', $where);
     }
 

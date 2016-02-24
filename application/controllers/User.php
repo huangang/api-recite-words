@@ -328,8 +328,6 @@ class User extends MY_Controller{
      *
      *
      * @param int $uid `required` 用户ID
-     * @param int $num `optional` 数量
-     * @param int $since_id `optional` 起始ID
      *
      *
      * ------
@@ -348,11 +346,37 @@ class User extends MY_Controller{
      */
     public function get_vocabulary(){
         $uid = (int)$this->input->get_post('uid', TRUE);
-        $num = (int)$this->input->get_post('num', TRUE);
-        $num = empty($num) ? 10 : $num;
-        $since_id = (int)$this->input->post_get('since_id', TRUE);
-        $ret = $this->Model_bus->get_vocabulary_model()->gets($uid, $since_id, $num);
+        $ret = $this->Model_bus->get_vocabulary_model()->gets($uid);
         $this->conversion_data($ret);
         $this->output($ret);
+    }
+
+    /**
+     * 删除单词
+     *
+     *
+     * @param int $uid `required` 用户ID
+     * @param int $vid `required` 单词ID
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function remove_vocabulary(){
+        $uid = (int)$this->input->get_post('uid', TRUE);
+        $vid = (int)$this->input->get_post('vid', TRUE);
+        $this->Model_bus->get_vocabulary_model()->remove($uid, $vid);
+        $this->output();
     }
 }
