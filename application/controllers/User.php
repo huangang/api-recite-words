@@ -438,4 +438,38 @@ class User extends MY_Controller{
         $this->Model_bus->get_user_model()->update($uid , ['password' => $password]);
         $this->output();
     }
+
+    /**
+     * 添加新的生词语
+     *
+     *
+     * @param int $uid `required` 用户ID
+     * @param string $word `required` 单词
+     *
+     *
+     * ------
+     *
+     * @return json
+     *
+     * ```
+     * 返回结果
+     *  {
+     *  }
+     * ```
+     *
+     *------------
+     * @version 1.0.0
+     * @author  huangang
+     */
+    public function add_vocabulary(){
+        $uid = (int)$this->input->get_post('uid', TRUE);
+        $word = $this->input->get_post('word', TRUE);
+        $id = $this->Model_bus->get_vocabulary_model()->add($uid, $word);
+        if(empty($id)){
+            $this->output(['message' => '已经添加或者添加失败'], ErrorCodes::service_error);
+        }else{
+            $this->output();
+        }
+
+    }
 }
