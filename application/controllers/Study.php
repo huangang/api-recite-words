@@ -157,17 +157,19 @@ class Study extends MY_Controller{
     public function search_word(){
         $word = $this->input->get_post('word', true);
         $word = trim($word);
-        $data = file_get_contents(SEARCH_WORD_API . $word);
+        $data = file_get_contents(QUERY_WORD_API . $word);
         $data = json_decode($data, true);
-        if(!empty($data['mark'])){
+        if($data['status_code'] == 0){
             $example = '';
-            if(!empty($data['es'])){
-                foreach($data['es'] as $k => $v){
-                    $example = $example . $v['sentence'] . "\n" . $v['translate'];
-                }
+            if(!empty($data['data']['en_definition']['defn'])){
+                $example = $data['data']['en_definition']['defn'];
             }
-            $this->Model_bus->get_study_model()->add_word($data['word'], $data['explain'], $example);
-            $this->output($data);
+            $ret['word'] = $data['data']['content'];
+            $ret['explain'] = $data['data']['definition'];
+            $ret['example'] = $example;
+            $ret['meaning'] = $data['data']['definition'];
+            $this->Model_bus->get_study_model()->add_word($ret['word'], $ret['explain'], $example);
+            $this->output($ret);
         }else{
             $this->output(array('msg' => '没有查询到'), ErrorCodes::logic_error);
         }
