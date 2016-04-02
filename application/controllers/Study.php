@@ -260,4 +260,19 @@ class Study extends MY_Controller{
         $data = $this->Model_bus->get_study_model()->statistics($uid);
         $this->output($data);
     }
+    
+    public function consolidate(){
+        $uid = $this->input->get_post('uid', true);
+        $this->check_parameter(array('uid' => $uid));
+        $data = $this->Model_bus->get_study_model()->consolidate($uid);
+        $word_info = file_get_contents(QUERY_WORD_API . $data['word']);
+        $word_info = json_decode($word_info, TRUE);
+        $word['word'] = $word_info['data']['content'];//单词
+        $word['pronunciation'] = $word_info['data']['pronunciation'];//音标
+        $word['definition'] = $word_info['data']['definition'];//中文释义
+        $word['audio'] = $word_info['data']['audio'];//发音
+        $word['en_definition'] = $word_info['data']['en_definition'];
+        $this->output($word);
+
+    }
 }

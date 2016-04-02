@@ -345,4 +345,16 @@ class Study_model extends MY_Model{
         $data['all'] = $this->get_all_study_num($uid);
         return $data;
     }
+
+
+    public function consolidate($uid){
+        $time = time() - 2592000;//30天前
+        $this->db->from('app_study_record');
+        $this->db->order_by('id','RANDOM');
+        $this->db->where('uid', $uid);
+        $this->db->where('unix_timestamp(create_time) > '. $time);
+        $this->db->where('status', self::STATUS_SKILLED);
+        $this->db->limit(1);
+        return $this->db->get()->row_array();
+    }
 }
