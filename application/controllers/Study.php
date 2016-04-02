@@ -196,8 +196,9 @@ class Study extends MY_Controller{
     public function daily_sentence(){
         $data = file_get_contents(DAILY_SENTENCE_API);
         $data = json_decode($data, TRUE);
-        unset($data['voice']);
-        $this->output($data);
+        $ret['sentence'] = $data['content'];
+        $ret['translate'] = $data['note'];
+        $this->output($ret);
     }
 
     /**

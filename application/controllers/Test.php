@@ -28,6 +28,7 @@
 class Test extends MY_Controller{
 
     public function index(){
+        dump(1);exit;
         $this->Model_bus->get_common_model()->test();
     }
 
