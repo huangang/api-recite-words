@@ -141,6 +141,11 @@ class Home extends MY_Controller{
                         $this->weObj->text($content)->reply();
                         exit;
                         break;
+                    /*关注事件回复*/
+                    case Wechat::EVENT_SUBSCRIBE:
+                        $this->weObj->text("welcome, I'm pupued")->reply();
+                        exit;
+                        break;
                     default:
                         $this->weObj->text($event)->reply();
                 }
